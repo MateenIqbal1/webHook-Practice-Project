@@ -1,9 +1,10 @@
 const webhookEventModel = require("../models/webhook-event.model");
+const webhookQueue = require("../queues/webook.queue");
 const verifySignature = require("../utils/verify-signature");
 
 const githubWebhook = async (req, res) => {
     try {
-     
+
         const signature = req.headers["x-hub-signature-256"];
         const deliveryId = req.headers["x-github-delivery"];
         const event = req.headers["x-github-event"];
@@ -15,7 +16,7 @@ const githubWebhook = async (req, res) => {
             });
         }
 
-     
+
         const isValid = verifySignature(
             req.rawBody,
             signature,
@@ -29,7 +30,7 @@ const githubWebhook = async (req, res) => {
             });
         }
 
-        
+
 
         if (!deliveryId) {
             return res.status(400).json({
@@ -48,6 +49,22 @@ const githubWebhook = async (req, res) => {
 
             console.log("Webhook saved:", webhook._id);
 
+            await webhookQueue.add(
+                "process-webhook",
+                {
+                    webhookEventId: webhook._id.toString()
+                },
+                {
+                    attempts: 3,
+
+                    backoff: {
+                        type: "exponential",
+                        delay: 2000
+                    }
+                }
+            );
+
+            console.log("Webhook job added to queue");
         } catch (error) {
 
             if (error.code === 11000) {
@@ -62,11 +79,8 @@ const githubWebhook = async (req, res) => {
                     message: "Webhook already received"
                 });
             }
-
             throw error;
         }
-
-        
 
         return res.status(200).json({
             success: true,

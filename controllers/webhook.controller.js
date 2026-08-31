@@ -1,6 +1,11 @@
 const verifySignature = require("../utils/verify-signature");
 
 const githubWebhook = (req, res) => {
+
+    console.log("RAW BODY:", req.rawBody);
+    console.log("BODY:", req.body);
+    console.log("SIGNATURE:", req.headers["x-hub-signature-256"]);
+
     const signature = req.headers["x-hub-signature-256"];
     if (!signature) {
         return res.status(401).json({

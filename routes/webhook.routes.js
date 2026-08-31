@@ -1,17 +1,8 @@
 const express = require("express");
+const { githubWebhook } = require("../controllers/webhook.controller");
 
 const router = express.Router();
 
-router.post("/webhooks/github", (req, res) => {
-    console.log("GitHub webhook received");
-
-    console.log("Headers:", req.headers);
-    console.log("Body:", req.body);
-       
-    return res.status(200).json({
-        success: true,
-        message: "Webhook received"
-    });
-});
+router.post("/webhooks/github", githubWebhook);
 
 module.exports = router;

@@ -2,22 +2,22 @@
    "scripts": {
       "start": "nodemon index.js"
    },
-  "name": "webhooks",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
- 
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bullmq": "^6.3.2",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "ioredis": "^6.0.0",
-    "mongoose": "^9.9.4"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.14"
-  }
+   "name": "webhooks",
+   "version": "1.0.0",
+   "description": "",
+   "main": "index.js",
+   "keywords": [],
+   "author": "",
+   "license": "ISC",
+   "dependencies": {
+      "bullmq": "^6.3.2",
+      "crypto": "^1.0.1",
+      "dotenv": "^17.4.2",
+      "express": "^5.2.1",
+      "ioredis": "^6.0.0",
+      "mongoose": "^9.9.4"
+   },
+   "devDependencies": {
+      "nodemon": "^3.1.14"
+   }
 }
